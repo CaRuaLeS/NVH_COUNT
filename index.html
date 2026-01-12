@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Caza Tracker</title>
+    <meta name="theme-color" content="#1c1b1f">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦌</text></svg>">
+</head>
+
+<body>
+    <div class="app-container">
+        <div id="view-tracker" class="view active-view">
+            <header class="top-bar">
+                <h1>Caza Tracker</h1>
+                <button id="reset-btn" class="icon-btn" aria-label="Reset Data">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <path
+                            d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" />
+                    </svg>
+                </button>
+            </header>
+
+            <main class="table-container">
+                <div id="tracker-empty-state" class="empty-state" style="display: none;">
+                    <svg viewBox="0 0 24 24" class="icon-large">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                    </svg>
+                    <p>Need to add a Hunter</p>
+                </div>
+                <div class="data-table-wrapper">
+                    <table id="hunting-table">
+                        <thead>
+                            <tr id="header-row">
+                                <th class="sticky-col col-name">Cazador</th>
+                                <!-- Dynamic Hand Header columns -->
+                                <th class="sticky-col-right col-total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                        <tfoot id="table-footer">
+                            <tr class="footer-row">
+                                <td class="sticky-col col-name">Total</td>
+                                <!-- Dynamic Footer Cells -->
+                                <td class="sticky-col-right col-total" id="grand-total">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </main>
+
+            <div class="fab-container">
+                <button id="fab-main" class="fab primary">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                    </svg>
+                </button>
+                <div class="fab-menu" id="fab-menu">
+                    <button id="btn-add-conejo" class="fab-mini" title="Add Conejo Column">
+                        <span class="label">Añadir Conejo</span>
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <!-- Rabbit Icon Placeholder (using a star or distinct shape for now if specific rabbit path unknown suitable for generic icon set) -->
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z" />
+                        </svg>
+                    </button>
+                    <button id="btn-add-hand" class="fab-mini" title="Add Hand">
+                        <span class="label">Nueva Mano</span>
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="M7 2v11h3v9l7-12h-4l4-8z" />
+                        </svg>
+                    </button>
+                    <button id="btn-add-hunter" class="fab-mini" title="Add Hunter">
+                        <span class="label">Nuevo Cazador</span>
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path
+                                d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </button>
+                    <button id="btn-remove-mode" class="fab-mini" title="Edit Mode">
+                        <span class="label">Editar/Borrar</span>
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path
+                                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-stock" class="view">
+            <header class="top-bar">
+                <h1>Stock y Gestión</h1>
+            </header>
+            <main class="stock-container">
+                <div class="data-table-wrapper">
+                    <table id="stock-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky-col col-name">Cazador</th>
+                                <th class="col-stock-input">
+                                    <input type="text" id="header-input-1" class="header-input" value="P">
+                                </th>
+                                <th class="col-stock-input">
+                                    <input type="text" id="header-input-2" class="header-input" value="P & E">
+                                </th>
+                                <th class="col-stock-total-header">
+                                    Total <span id="header-label-1-display">P</span>
+                                </th>
+                                <th class="col-stock-total-header">
+                                    Total <span id="header-label-2-display">P & E</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="stock-body">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                        <tfoot id="stock-footer">
+                            <tr>
+                                <td class="sticky-col col-name">Total</td>
+                                <td id="col-total-1" class="col-stock-total">0</td>
+                                <td id="col-total-2" class="col-stock-total">0</td>
+                                <td id="col-total-3" class="col-stock-total">0</td>
+                                <td id="col-total-4" class="col-stock-total">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </main>
+        </div>
+
+        <div id="view-total" class="view">
+            <header class="top-bar">
+                <h1>Total</h1>
+            </header>
+            <main class="total-container">
+                <!-- 1. Comparison Card -->
+                <div class="card">
+                    <div class="grid-2">
+                        <div class="input-block">
+                            <label>Real Gathered</label>
+                            <input type="number" id="total-gathered-input" placeholder="0">
+                        </div>
+                        <div class="input-block">
+                            <label>Tracker Total</label>
+                            <div id="tracker-total-display" class="highlight-val">0</div>
+                        </div>
+                    </div>
+                    <!-- Difference Info -->
+                    <div class="info-row">
+                        <span>Difference:</span>
+                        <span id="diff-val">0</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Extra Cost per Hunter:</span>
+                        <span id="diff-per-hunter">0</span>
+                    </div>
+                </div>
+
+                <!-- 2. Expenses Card -->
+                <div class="card">
+                    <h3>Gastos</h3>
+                    <!-- Secretarios -->
+                    <div class="expense-row">
+                        <label>Secretarios</label>
+                        <div class="flex-row">
+                            <input type="number" id="secr-count" placeholder="Count" class="small-input">
+                            <span>x</span>
+                            <input type="number" id="secr-price" value="70" class="small-input">
+                            <span class="currency">€</span>
+                        </div>
+                    </div>
+                    <div class="info-row small">
+                        <span>Cost per Hunter:</span>
+                        <span id="secr-per-hunter">0</span>
+                    </div>
+
+                    <!-- Propina -->
+                    <div class="expense-row mt-2">
+                        <label>Propina</label>
+                        <div class="flex-row">
+                            <input type="number" id="propina-amount" placeholder="0" class="medium-input">
+                            <span class="currency">€</span>
+                        </div>
+                    </div>
+                    <div class="info-row small">
+                        <span>Cost per Hunter:</span>
+                        <span id="propina-per-hunter">0</span>
+                    </div>
+                </div>
+
+                <!-- 3. Final Summary Card (The Bill) -->
+                <div class="card">
+                    <h3>Resumen</h3>
+                    <div class="bill-row">
+                        <span>Perdices (<span id="perdices-count-display">0</span> x <input type="number"
+                                id="price-perdiz" value="25" class="tiny-input">)</span>
+                        <span id="bill-perdiz">0</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Conejo (<input type="number" id="count-conejo" placeholder="0" class="tiny-input"
+                                readonly> x
+                            <input type="number" id="price-conejo" value="13" class="tiny-input">)</span>
+                        <span id="bill-conejo">0</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>
+                            <input type="text" id="total-label-1" class="text-input-inline" value="Peladas">
+                            (<span id="stock-p-count">0</span> x
+                            <input type="number" id="total-mult-1" class="tiny-input" value="2">)
+                        </span>
+                        <span id="bill-peladas">0</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>
+                            <input type="text" id="total-label-2" class="text-input-inline" value="P & E">
+                            (<span id="stock-pe-count">0</span> x
+                            <input type="number" id="total-mult-2" class="tiny-input" value="2.5">)
+                        </span>
+                        <span id="bill-pe">0</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Secretarios Total</span>
+                        <span id="bill-secr">0</span>
+                    </div>
+                    <div class="bill-divider"></div>
+                    <div class="bill-row total">
+                        <span>Total General</span>
+                        <span id="grand-total-display">0</span>
+                    </div>
+                </div>
+                <!-- 4. Hunter Breakdown List -->
+                <div class="card">
+                    <h3>Detalle por Cazador</h3>
+                    <div id="hunter-list-container" class="hunter-list">
+                        <!-- Dynamic List -->
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown Dialog -->
+                <dialog id="hunter-breakdown-dialog">
+                    <div class="breakdown-header">
+                        <h3>Hunter Name</h3>
+                        <button class="breakdown-close icon-btn"
+                            onclick="document.getElementById('hunter-breakdown-dialog').close()">
+                            <svg viewBox="0 0 24 24" class="icon">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="breakdown-content">
+                        <!-- Dynamic Content -->
+                    </div>
+                </dialog>
+            </main>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="view-tracker">
+                <svg viewBox="0 0 24 24" class="icon">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                </svg>
+                <span>Tracker</span>
+            </button>
+            <button class="nav-item" data-target="view-stock">
+                <svg viewBox="0 0 24 24" class="icon">
+                    <path
+                        d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                </svg>
+                <span>Stock</span>
+            </button>
+            <button class="nav-item" data-target="view-total">
+                <svg viewBox="0 0 24 24" class="icon">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z" />
+                </svg>
+                <span>Total</span>
+            </button>
+        </nav>
+
+        <!-- Dialog for Adding Hunter -->
+        <dialog id="hunter-dialog">
+            <form method="dialog">
+                <h3>Nuevo Cazador</h3>
+                <div class="input-group">
+                    <input type="text" id="new-hunter-name" placeholder="Nombre" required>
+                </div>
+                <div class="dialog-actions">
+                    <button type="button" id="cancel-hunter">Cancelar</button>
+                    <button type="submit" id="confirm-hunter">Añadir</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
